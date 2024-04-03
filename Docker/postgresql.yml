@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  lanchonete-postgresql:
+    image: postgres
+    environment:
+      - POSTGRES_USER=lanchonete
+      - POSTGRES_PASSWORD=netprecision
+    ports:
+      - 5432:5432

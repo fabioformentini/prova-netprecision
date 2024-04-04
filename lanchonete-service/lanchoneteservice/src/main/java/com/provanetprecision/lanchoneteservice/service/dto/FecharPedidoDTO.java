@@ -11,12 +11,9 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PedidoDTO {
+public class FecharPedidoDTO {
 
     private Long id;
-    private String codigo;
-    private Boolean pedidoFechado;
     private BigDecimal valorPagamento;
-    private BigDecimal troco;
 
 }

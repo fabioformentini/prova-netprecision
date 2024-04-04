@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "pedido")
@@ -30,5 +31,11 @@ public class Pedido implements Serializable {
 
     @Column(name = "codigo")
     private String codigo;
+
+    @Column(name = "pedido_fechado")
+    private Boolean pedidoFechado;
+
+    @Column(name = "valor_pagamento", precision = 10, scale = 2, nullable = false)
+    private BigDecimal valorPagamento;
 
 }

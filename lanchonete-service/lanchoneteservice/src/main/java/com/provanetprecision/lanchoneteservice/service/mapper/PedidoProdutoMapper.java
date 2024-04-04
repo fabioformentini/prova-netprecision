@@ -1,5 +1,6 @@
 package com.provanetprecision.lanchoneteservice.service.mapper;
 
+import com.provanetprecision.lanchoneteservice.domain.Pedido;
 import com.provanetprecision.lanchoneteservice.domain.PedidoProduto;
 import com.provanetprecision.lanchoneteservice.service.dto.PedidoProdutoDTO;
 import org.mapstruct.InheritInverseConfiguration;

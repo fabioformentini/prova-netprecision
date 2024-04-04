@@ -6,9 +6,12 @@ import com.provanetprecision.lanchoneteservice.controller.errors.PedidoNotFoundE
 import com.provanetprecision.lanchoneteservice.controller.errors.QuantidadeProdutoException;
 import com.provanetprecision.lanchoneteservice.repository.PedidoProdutoRepository;
 import com.provanetprecision.lanchoneteservice.repository.PedidoRepository;
+import com.provanetprecision.lanchoneteservice.repository.ProdutoRepository;
 import com.provanetprecision.lanchoneteservice.service.dto.FecharPedidoDTO;
 import com.provanetprecision.lanchoneteservice.service.dto.PedidoDTO;
 import com.provanetprecision.lanchoneteservice.service.dto.PedidoProdutoDTO;
+import com.provanetprecision.lanchoneteservice.service.dto.ProdutoQuantidadeDTO;
+import com.provanetprecision.lanchoneteservice.service.dto.TotalPedidoDTO;
 import com.provanetprecision.lanchoneteservice.service.mapper.PedidoMapper;
 import com.provanetprecision.lanchoneteservice.service.mapper.PedidoProdutoMapper;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +33,7 @@ public class PedidoService {
     private final PedidoRepository repository;
     private final PedidoProdutoRepository pedidoProdutoRepository;
     private final PedidoRepository pedidoRepository;
+    private final ProdutoRepository produtoRepository;
 
     public PedidoDTO salvar(PedidoDTO dto) {
         return mapper.toDto(repository.save(mapper.toEntity(dto)));
@@ -56,7 +60,7 @@ public class PedidoService {
         return pedidoProdutoMapper.toDto(pedidoProdutoRepository.save(pedidoProdutoMapper.toEntity(dto)));
     }
 
-    public BigDecimal calcularPrecoTotal(Long id) {
+    public BigDecimal calcularPrecoTotalById(Long id) {
         return pedidoProdutoRepository.calcularPrecoTotalPedidoById(id);
     }
 
@@ -67,7 +71,7 @@ public class PedidoService {
         if (pedidoDTO.getPedidoFechado().equals(Boolean.TRUE)){
             throw new PedidoFechadoException("O pedido já está fechado");
         }
-        BigDecimal precoTotal = calcularPrecoTotal(dto.getId());
+        BigDecimal precoTotal = calcularPrecoTotalById(dto.getId());
         if (precoTotal.compareTo(dto.getValorPagamento()) > 0) {
             throw new PagamentoInsuficienteException("O valor do pagamento é inferior ao valor total do pedido");
         }
@@ -89,5 +93,14 @@ public class PedidoService {
         return pedidoRepository.findById(id).map(mapper::toDto);
     }
 
+    public BigDecimal calcularPrecoTotal(TotalPedidoDTO dto) {
+        BigDecimal precoTotal = BigDecimal.ZERO;
+        for (ProdutoQuantidadeDTO produtoQuantidadeDTO : dto.getProdutoQuantidadeDTOList()) {
+            BigDecimal precoProduto = produtoRepository.findPrecoByProdutoId(produtoQuantidadeDTO.getIdProduto());
+            BigDecimal quantidade = BigDecimal.valueOf(produtoQuantidadeDTO.getQuantidade());
+            precoTotal = precoTotal.add(precoProduto.multiply(quantidade));
+        }
+        return precoTotal;
+    }
 
 }

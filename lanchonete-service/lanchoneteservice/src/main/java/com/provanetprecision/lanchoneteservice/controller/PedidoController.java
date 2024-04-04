@@ -4,6 +4,7 @@ import com.provanetprecision.lanchoneteservice.service.PedidoService;
 import com.provanetprecision.lanchoneteservice.service.dto.FecharPedidoDTO;
 import com.provanetprecision.lanchoneteservice.service.dto.PedidoDTO;
 import com.provanetprecision.lanchoneteservice.service.dto.PedidoProdutoDTO;
+import com.provanetprecision.lanchoneteservice.service.dto.TotalPedidoDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -52,7 +53,7 @@ public class PedidoController {
 
     @GetMapping("/calcular-preco-total/{idPedido}")
     public ResponseEntity<BigDecimal> calcularPrecoTotal(@PathVariable("idPedido") Long id){
-        BigDecimal precoTotal = service.calcularPrecoTotal(id);
+        BigDecimal precoTotal = service.calcularPrecoTotalById(id);
         return new ResponseEntity<>(precoTotal, HttpStatus.OK);
     }
 
@@ -60,6 +61,13 @@ public class PedidoController {
     public ResponseEntity<Optional<PedidoDTO>> fecharPedido(@Valid @RequestBody FecharPedidoDTO dto){
         Optional<PedidoDTO> pedidoDTO = service.fecharPedido(dto);
         return new ResponseEntity<>(pedidoDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("/calcular-preco-total")
+    public ResponseEntity<BigDecimal> calcularPrecoTotal(@Valid @RequestBody TotalPedidoDTO dto){
+        BigDecimal precoTotal = service.calcularPrecoTotal(dto);
+        return new ResponseEntity<>(precoTotal, HttpStatus.OK);
+
     }
 
 

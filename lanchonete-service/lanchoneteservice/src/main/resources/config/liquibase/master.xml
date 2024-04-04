@@ -10,5 +10,7 @@
     <include file="config/liquibase/changelog/20240403205300_added_entity_Pedido.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/20240403210000_added_entity_Rel_Produto_Pedido.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/20240403223000_insert_products.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/20240404005800_added_column_pedido_fechado_entity_Pedido.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/20240404122500_added_column_valor_pagamento_entity_Pedido.xml" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>

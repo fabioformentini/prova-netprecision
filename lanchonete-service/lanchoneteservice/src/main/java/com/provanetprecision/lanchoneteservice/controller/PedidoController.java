@@ -4,6 +4,7 @@ import com.provanetprecision.lanchoneteservice.service.PedidoService;
 import com.provanetprecision.lanchoneteservice.service.dto.FecharPedidoDTO;
 import com.provanetprecision.lanchoneteservice.service.dto.PedidoDTO;
 import com.provanetprecision.lanchoneteservice.service.dto.PedidoProdutoDTO;
+import com.provanetprecision.lanchoneteservice.service.dto.PedidoProdutoListDTO;
 import com.provanetprecision.lanchoneteservice.service.dto.TotalPedidoDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -31,7 +33,6 @@ public class PedidoController {
     @PostMapping
     public ResponseEntity<PedidoDTO> salvar(@Valid @RequestBody PedidoDTO dto) {
         PedidoDTO pedidoDTO = service.salvar(dto);
-
         return new ResponseEntity<>(pedidoDTO, HttpStatus.CREATED);
     }
 
@@ -69,6 +70,25 @@ public class PedidoController {
         return new ResponseEntity<>(precoTotal, HttpStatus.OK);
 
     }
+
+    @GetMapping
+    public ResponseEntity<List<PedidoDTO>> buscarTodos() {
+        List<PedidoDTO> listagem = service.buscarTodos();
+        return new ResponseEntity<>(listagem, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PedidoDTO> buscarPorId(@PathVariable("id") Long id) {
+        PedidoDTO pedidoDTO = service.buscarPorId(id);
+        return new ResponseEntity<>(pedidoDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/buscar-produtos-pedido/{id}")
+    public ResponseEntity<List<PedidoProdutoListDTO>> buscarProdutosPedidosById(@PathVariable("id") Long id) {
+        List<PedidoProdutoListDTO> listagem = service.buscarProdutosPedidosById(id);
+        return new ResponseEntity<>(listagem, HttpStatus.OK);
+    }
+
 
 
 }

@@ -4,22 +4,27 @@ import com.provanetprecision.lanchoneteservice.controller.errors.PagamentoInsufi
 import com.provanetprecision.lanchoneteservice.controller.errors.PedidoFechadoException;
 import com.provanetprecision.lanchoneteservice.controller.errors.PedidoNotFoundException;
 import com.provanetprecision.lanchoneteservice.controller.errors.QuantidadeProdutoException;
+import com.provanetprecision.lanchoneteservice.domain.Pedido;
 import com.provanetprecision.lanchoneteservice.repository.PedidoProdutoRepository;
 import com.provanetprecision.lanchoneteservice.repository.PedidoRepository;
 import com.provanetprecision.lanchoneteservice.repository.ProdutoRepository;
 import com.provanetprecision.lanchoneteservice.service.dto.FecharPedidoDTO;
 import com.provanetprecision.lanchoneteservice.service.dto.PedidoDTO;
 import com.provanetprecision.lanchoneteservice.service.dto.PedidoProdutoDTO;
+import com.provanetprecision.lanchoneteservice.service.dto.PedidoProdutoListDTO;
 import com.provanetprecision.lanchoneteservice.service.dto.ProdutoQuantidadeDTO;
 import com.provanetprecision.lanchoneteservice.service.dto.TotalPedidoDTO;
 import com.provanetprecision.lanchoneteservice.service.mapper.PedidoMapper;
 import com.provanetprecision.lanchoneteservice.service.mapper.PedidoProdutoMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -103,4 +108,21 @@ public class PedidoService {
         return precoTotal;
     }
 
+    public List<PedidoDTO> buscarTodos() {
+        return mapper.toDto(repository.findAll());
+    }
+
+    public PedidoDTO buscarPorId(Long id) {
+        return mapper.toDto(findById(id));
+    }
+
+    private Pedido findById(Long id) {
+        return repository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado"));
+    }
+
+
+    public List<PedidoProdutoListDTO> buscarProdutosPedidosById(Long idPedido) {
+        return repository.buscarProdutosPedidosById(idPedido);
+    }
 }

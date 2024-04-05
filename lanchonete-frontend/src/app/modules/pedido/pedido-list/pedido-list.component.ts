@@ -23,6 +23,7 @@ export class PedidoListComponent implements OnInit {
   cols!: Column[];
   valorPagamento!: number;
   troco: number = 0;
+  pedidoPago: boolean = false;
 
   constructor(private service: PedidoService,
               public dialogService: DialogService,
@@ -50,7 +51,13 @@ export class PedidoListComponent implements OnInit {
     let codigo = Math.floor(100000 + Math.random() * 900000)
     let pedido = new PedidoModel(codigo.toString())
     this.service.insert(pedido).subscribe(value => {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'O pedido ' + value.codigo + ' foi criado com sucesso!'
+      })
       this.buscarPedidos();
+
     })
   }
 
@@ -68,16 +75,6 @@ export class PedidoListComponent implements OnInit {
           width: '60%',
           data: {pedido: value, acao: acao}
         });
-      this.ref.onClose.subscribe((pedido) => {
-        if (pedido) {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'O pedido ' + pedido.codigo + ' foi editado com sucesso!'
-          })
-          this.buscarPedidos()
-        }
-      });
     })
   }
 
@@ -92,6 +89,12 @@ export class PedidoListComponent implements OnInit {
     const fecharPedidoModel: FecharPedidoModel = new FecharPedidoModel(this.idPedido, this.valorPagamento);
     this.service.fecharPedido(fecharPedidoModel).subscribe(value => {
       this.troco = value.troco
+      this.pedidoPago = true;
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'O pedido ' + value.codigo + ' foi finalizado!'
+      })
       this.buscarPedidos();
     })
   }

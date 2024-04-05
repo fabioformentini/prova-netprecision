@@ -22,6 +22,7 @@ export class PedidoListComponent implements OnInit {
   pedidos: PedidoModel[] = [];
   cols!: Column[];
   valorPagamento!: number;
+  troco: number = 0;
 
   constructor(private service: PedidoService,
               public dialogService: DialogService,
@@ -39,8 +40,8 @@ export class PedidoListComponent implements OnInit {
   private construirColunasListagem() {
     this.cols = [
       {field: 'codigo', header: 'Código', text: true},
-      {field: 'valorPagamento', header: 'Valor Pagamento', text: true},
-      {field: 'pedidoFechado', header: 'Status', text: true},
+      {field: 'valorPagamento', header: 'Valor Pagamento'},
+      {field: 'pedidoFechado', header: 'Status'},
       {field: 'acoes', header: 'Ações'}
     ];
   }
@@ -83,11 +84,14 @@ export class PedidoListComponent implements OnInit {
   fecharPedido(id: number) {
     this.idPedido = id;
     this.displayModal = true;
+    this.troco = 0;
+    this.valorPagamento = 0;
   }
 
   fechar() {
     const fecharPedidoModel: FecharPedidoModel = new FecharPedidoModel(this.idPedido, this.valorPagamento);
     this.service.fecharPedido(fecharPedidoModel).subscribe(value => {
+      this.troco = value.troco
       this.buscarPedidos();
     })
   }

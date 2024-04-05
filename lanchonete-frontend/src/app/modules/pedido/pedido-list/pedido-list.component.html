@@ -13,7 +13,15 @@
   <ng-template pTemplate="body" let-rowData let-columns="columns">
     <tr>
       <td *ngFor="let col of columns">
-        {{ rowData[col.field] }}
+        <ng-template [ngIf]="col.text">
+          {{ rowData[col.field] }}
+        </ng-template>
+        <ng-template [ngIf]="col.field == 'pedidoFechado'">
+          {{ rowData[col.field] | status }}
+        </ng-template>
+        <ng-template [ngIf]="col.field == 'valorPagamento'">
+          {{ rowData[col.field] | currency: 'BRL' }}
+        </ng-template>
         <ng-template [ngIf]="col.field == 'acoes'">
           <div class="flex justify-content-center p-0">
             <button
@@ -28,6 +36,7 @@
                     icon="pi pi-pencil"
                     class="flex align-items-center justify-content-center m-1"
                     iconPos="left"
+                    [disabled]="rowData.pedidoFechado"
                     (click)="handleAcao(rowData, 'editar')"
             >
             </button>
@@ -35,6 +44,7 @@
               pButton
               icon="pi pi-lock"
               class="flex align-items-center justify-content-center m-1"
+              [disabled]="rowData.pedidoFechado"
             (click)="fecharPedido(rowData.id)">
             </button>
           </div>
@@ -48,9 +58,13 @@
           [draggable]="false" [resizable]="false">
   <div class="field">
     <label class="block">Valor do pagamento</label>
-    <p-inputNumber inputId="integeronly" [(ngModel)]="valorPagamento"></p-inputNumber>
+    <p-inputNumber inputId="integeronly" [(ngModel)]="valorPagamento" mode="currency" currency="BRL"></p-inputNumber>
+  </div>
+  <div class="field">
+    <label class="block">Troco</label>
+    <p-inputNumber inputId="integeronly" [(ngModel)]="troco" [disabled]="true" mode="currency" currency="BRL"></p-inputNumber>
   </div>
   <ng-template pTemplate="footer">
-    <p-button icon="pi pi-check" (click)="displayModal=false" label="fechar" styleClass="p-button-text" (onClick)="fechar()"></p-button>
+    <p-button icon="pi pi-check" label="Confirmar Pagamento" styleClass="p-button-text" (onClick)="fechar()"></p-button>
   </ng-template>
 </p-dialog>

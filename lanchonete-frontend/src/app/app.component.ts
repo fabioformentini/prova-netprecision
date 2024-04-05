@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.items =  [
       { label: 'Home', icon: 'pi pi-fw pi-home'},
-      { label: 'Pedidos', icon: 'pi pi-fw pi-calendar', routerLinkActiveOptions: true, routerLink: "/ṕedidos" }
+      { label: 'Pedidos', icon: 'pi pi-fw pi-calendar'}
     ];
   }
 

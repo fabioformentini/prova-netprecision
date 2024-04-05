@@ -43,7 +43,9 @@ public class PedidoService {
     private final ProdutoRepository produtoRepository;
 
     public PedidoDTO salvar(PedidoDTO dto) {
-        dto.setPedidoFechado(Boolean.FALSE);
+        if (Objects.isNull(dto.getId())){
+            dto.setPedidoFechado(Boolean.FALSE);
+        }
         return mapper.toDto(repository.save(mapper.toEntity(dto)));
     }
 

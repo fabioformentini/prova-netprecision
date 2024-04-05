@@ -8,6 +8,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {TabMenuModule} from 'primeng/tabmenu';
+import {SharedModule} from "./shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import {TabMenuModule} from 'primeng/tabmenu';
     TabMenuModule,
     TableModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    SharedModule
   ],
   providers: [MessageService, ConfirmationService],
   bootstrap: [AppComponent]

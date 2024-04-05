@@ -12,12 +12,13 @@ import {DropdownModule} from "primeng/dropdown";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {InputNumberModule} from "primeng/inputnumber";
 import {DialogModule} from "primeng/dialog";
+import {SharedModule} from "../../shared/shared.module";
 
 
 @NgModule({
   declarations: [
     PedidoListComponent,
-    PedidoFormComponent,
+    PedidoFormComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +31,8 @@ import {DialogModule} from "primeng/dialog";
     ReactiveFormsModule,
     InputNumberModule,
     DialogModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ]
 })
 export class PedidoModule {

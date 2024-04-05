@@ -1,0 +1,50 @@
+<div class="field col-12">
+
+  <form [formGroup]="formPedido">
+    <div class="field col-12">
+      <label class="block">Produtos Disponíveis</label>
+      <p-dropdown formControlName="idProduto" [options]="produtosOptions" placeholder="Selecione"
+                  appendTo="body" styleClass="w-full">
+      </p-dropdown>
+    </div>
+    <div class="col-12">
+      <div class="field">
+        <label class="block">Quantidade</label>
+        <p-inputNumber inputId="integeronly" formControlName="quantidade" [showButtons]="true"></p-inputNumber>
+
+        <p-button [disabled]="isVisualizar" label="Adicionar" styleClass="ml-3" (onClick)="adicionarProduto()"></p-button>
+      </div>
+    </div>
+  </form>
+
+  <p-table [columns]="colsProdutos" [value]="produtosList" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns">
+          {{ col.header }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns">
+          <ng-template [ngIf]="col.text">
+            {{rowData[col.field]}}
+          </ng-template>
+          <ng-template [ngIf]="col.field == 'acoes'">
+            <div class="flex justify-content-center p-0">
+              <button
+                [disabled]="isVisualizar"
+                pButton
+                icon="pi pi-trash"
+                class="button-action botao-secundario button-view sem-fundo flex align-items-center justify-content-center m-1"
+                (click)="removerProduto(rowData)">
+              </button>
+            </div>
+          </ng-template>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+</div>

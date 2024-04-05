@@ -1,0 +1,70 @@
+<div class="col-12 flex justify-content-center">
+  <p-button label="Novo Pedido" styleClass="p-button-success" (onClick)="criarPedido()"></p-button>
+</div>
+
+<p-table [columns]="cols" [value]="pedidos" [tableStyle]="{ 'min-width': '50rem' }">
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th class= "centralizado" *ngFor="let col of columns">
+        {{ col.header }}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+    <tr>
+      <td *ngFor="let col of columns">
+        <ng-template [ngIf]="col.text">
+          {{ rowData[col.field] }}
+        </ng-template>
+        <ng-template [ngIf]="col.field == 'pedidoFechado'">
+          {{ rowData[col.field] | status }}
+        </ng-template>
+        <ng-template [ngIf]="col.field == 'valorPagamento'">
+          {{ rowData[col.field] | currency: 'BRL' }}
+        </ng-template>
+        <ng-template [ngIf]="col.field == 'acoes'">
+          <div class="flex justify-content-center p-0">
+            <button
+              pButton
+              icon="pi pi-eye"
+              class="botao-secundario flex align-items-center justify-content-center m-1"
+              iconPos="left"
+              (click)="handleAcao(rowData, 'visualizar')"
+            >
+            </button>
+            <button pButton
+                    icon="pi pi-pencil"
+                    class="flex align-items-center justify-content-center m-1"
+                    iconPos="left"
+                    [disabled]="rowData.pedidoFechado"
+                    (click)="handleAcao(rowData, 'editar')"
+            >
+            </button>
+            <button
+              pButton
+              icon="pi pi-lock"
+              class="flex align-items-center justify-content-center m-1"
+              [disabled]="rowData.pedidoFechado"
+            (click)="fecharPedido(rowData.id)">
+            </button>
+          </div>
+        </ng-template>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-toast></p-toast>
+<p-dialog header="Fechar Pedido" [(visible)]="displayModal" [modal]="true" [style]="{width: '50'}"
+          [draggable]="false" [resizable]="false">
+  <div class="field">
+    <label class="block">Valor do pagamento</label>
+    <p-inputNumber inputId="integeronly" [(ngModel)]="valorPagamento" mode="currency" currency="BRL"></p-inputNumber>
+  </div>
+  <div class="field">
+    <label class="block">Troco</label>
+    <p-inputNumber inputId="integeronly" [(ngModel)]="troco" [disabled]="true" mode="currency" currency="BRL"></p-inputNumber>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-check" [disabled]="pedidoPago" label="Confirmar Pagamento" styleClass="p-button-text" (onClick)="fechar()"></p-button>
+  </ng-template>
+</p-dialog>

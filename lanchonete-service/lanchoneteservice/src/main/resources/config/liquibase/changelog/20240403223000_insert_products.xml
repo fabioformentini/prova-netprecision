@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="20240403223000-1" author="fabio.formentini">
+        <insert tableName="produto">
+            <column name="id" value="1147" />
+            <column name="nome" value="Cachorro quente" />
+            <column name="preco" value="3.00" />
+        </insert>
+        <insert tableName="produto">
+            <column name="id" value="1154" />
+            <column name="nome" value="Bauru" />
+            <column name="preco" value="2.50" />
+
+        </insert>
+        <insert tableName="produto">
+            <column name="id" value="1164" />
+            <column name="nome" value="Misto quente" />
+            <column name="preco" value="2.00" />
+
+        </insert>
+        <insert tableName="produto">
+            <column name="id" value="1155" />
+            <column name="nome" value="X-Burger" />
+            <column name="preco" value="6.00" />
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

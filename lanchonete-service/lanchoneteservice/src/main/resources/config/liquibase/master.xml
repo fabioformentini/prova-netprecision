@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+
+    <include file="config/liquibase/changelog/20240403204400_added_entity_Produto.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240403205300_added_entity_Pedido.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/20240403210000_added_entity_Rel_Produto_Pedido.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/20240403223000_insert_products.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/20240404005800_added_column_pedido_fechado_entity_Pedido.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/20240404122500_added_column_valor_pagamento_entity_Pedido.xml" relativeToChangelogFile="false"/>
+
+</databaseChangeLog>

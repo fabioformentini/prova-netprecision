@@ -1,9 +1,9 @@
 export class PedidoProdutoListModel {
 
-  private idPedido: number;
-  private idProduto: number;
-  private nome: number;
-  private quantidade: number;
+  public idPedido: number;
+  public idProduto: number;
+  public nome: number;
+  public quantidade: number;
 
 
   constructor(idPedido: number, idProduto: number, nome: number, quantidade: number) {

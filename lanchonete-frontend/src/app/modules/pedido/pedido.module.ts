@@ -9,8 +9,9 @@ import { PedidoFormComponent } from './pedido-form/pedido-form.component';
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {ToastModule} from "primeng/toast";
 import {DropdownModule} from "primeng/dropdown";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {InputNumberModule} from "primeng/inputnumber";
+import {DialogModule} from "primeng/dialog";
 
 
 @NgModule({
@@ -27,7 +28,9 @@ import {InputNumberModule} from "primeng/inputnumber";
     ToastModule,
     DropdownModule,
     ReactiveFormsModule,
-    InputNumberModule
+    InputNumberModule,
+    DialogModule,
+    FormsModule
   ]
 })
 export class PedidoModule {

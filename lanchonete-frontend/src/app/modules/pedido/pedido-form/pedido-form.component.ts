@@ -7,6 +7,8 @@ import {ProdutoService} from "../../../shared/services/produto.service";
 import {Column} from "../../../shared/models/column.model";
 import {PedidoProdutoModel} from "../../../shared/models/pedido-produto.model";
 import {PedidoProdutoListModel} from "../../../shared/models/pedido-produto-list.model";
+import {TotalPedidoModel} from "../../../shared/models/total-pedido.model";
+import {ProdutoQuantidadeModel} from "../../../shared/models/produto-quantidade.model";
 
 @Component({
   selector: 'app-pedido-form',
@@ -21,15 +23,16 @@ export class PedidoFormComponent implements OnInit {
   produtosOptions: SelectItem[] | undefined;
   colsProdutos!: Column[];
   produtosList: PedidoProdutoListModel[] = [];
+  valorTotalPedido: number = 0.00;
 
   constructor(
-              private messageService: MessageService,
-              public dialogService: DialogService,
-              private dialogConfig: DynamicDialogConfig,
-              private service: PedidoService,
-              private produtoService: ProdutoService,
-              public ref: DynamicDialogRef,
-              private fb: FormBuilder) {
+    private messageService: MessageService,
+    public dialogService: DialogService,
+    private dialogConfig: DynamicDialogConfig,
+    private service: PedidoService,
+    private produtoService: ProdutoService,
+    public ref: DynamicDialogRef,
+    private fb: FormBuilder) {
     this.formPedido = this.definirFormularioPedido()
     this.construirColunasListagem();
   }
@@ -67,6 +70,7 @@ export class PedidoFormComponent implements OnInit {
     }
     this.formPedido.get('idPedido')?.setValue(pedidoEncontrado.id)
     this.buscarProdutosPedido(pedidoEncontrado.id);
+    this.calcularTotalPedido(pedidoEncontrado.id);
   }
 
   private buscarProdutos() {
@@ -86,7 +90,11 @@ export class PedidoFormComponent implements OnInit {
 
 
   removerProduto(rowData: PedidoProdutoModel) {
-    console.log(rowData)
+    const idPedido = rowData.idPedido;
+    this.service.removerProduto(rowData).subscribe(value => {
+      this.buscarProdutosPedido(idPedido);
+    })
+
   }
 
   adicionarProduto() {
@@ -96,10 +104,32 @@ export class PedidoFormComponent implements OnInit {
     })
   }
 
-  buscarProdutosPedido(idPedido: number){
+  private buscarProdutosPedido(idPedido: number) {
     this.service.buscarProdutosPedidosById(idPedido).subscribe(value => {
       this.produtosList = value;
+      this.calcularTotalPedidoByList(this.produtosList)
     })
+  }
+
+  private calcularTotalPedido(idPedido: number){
+    this.service.calcularTotalPedidoById(idPedido).subscribe(value => {
+      this.valorTotalPedido = value;
+    })
+  }
+
+  private calcularTotalPedidoByList(produtosList: PedidoProdutoListModel[]) {
+    let produtoQuantidadeModelList: ProdutoQuantidadeModel[] = [];
+    produtosList.forEach(value => {
+      const produtoQuantidadeModel: ProdutoQuantidadeModel = new ProdutoQuantidadeModel();
+      produtoQuantidadeModel.idProduto = value.idProduto;
+      produtoQuantidadeModel.quantidade = value.quantidade;
+      produtoQuantidadeModelList.push(produtoQuantidadeModel)
+    })
+    let totalPedidoModel: TotalPedidoModel = new TotalPedidoModel(produtosList[0].idPedido, produtoQuantidadeModelList );
+    this.service.calcularTotalPedidoByItens(totalPedidoModel).subscribe(value => {
+      this.valorTotalPedido = value;
+    })
+
   }
 
 }

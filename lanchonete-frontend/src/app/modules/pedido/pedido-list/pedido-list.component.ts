@@ -5,6 +5,7 @@ import {PedidoModel} from "../../../shared/models/pedido.model";
 import {PedidoFormComponent} from "../pedido-form/pedido-form.component";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ConfirmationService, MessageService} from "primeng/api";
+import {FecharPedidoModel} from "../../../shared/models/fechar-pedido.model";
 
 @Component({
   selector: 'app-pedido-form',
@@ -16,6 +17,11 @@ import {ConfirmationService, MessageService} from "primeng/api";
 export class PedidoListComponent implements OnInit {
 
   ref: DynamicDialogRef | undefined;
+  displayModal: boolean = false;
+  idPedido: number = 0;
+  pedidos: PedidoModel[] = [];
+  cols!: Column[];
+  valorPagamento!: number;
 
   constructor(private service: PedidoService,
               public dialogService: DialogService,
@@ -29,13 +35,11 @@ export class PedidoListComponent implements OnInit {
     this.buscarPedidos();
   }
 
-  pedidos: PedidoModel[] = [];
-  cols!: Column[];
 
   private construirColunasListagem() {
     this.cols = [
       {field: 'codigo', header: 'Código', text: true},
-      {field: 'valorPagamento', header: 'Valor Total', text: true},
+      {field: 'valorPagamento', header: 'Valor Pagamento', text: true},
       {field: 'pedidoFechado', header: 'Status', text: true},
       {field: 'acoes', header: 'Ações'}
     ];
@@ -74,11 +78,18 @@ export class PedidoListComponent implements OnInit {
         }
       });
     })
-
-
   }
 
   fecharPedido(id: number) {
-
+    this.idPedido = id;
+    this.displayModal = true;
   }
+
+  fechar() {
+    const fecharPedidoModel: FecharPedidoModel = new FecharPedidoModel(this.idPedido, this.valorPagamento);
+    this.service.fecharPedido(fecharPedidoModel).subscribe(value => {
+      this.buscarPedidos();
+    })
+  }
+
 }

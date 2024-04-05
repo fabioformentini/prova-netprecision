@@ -5,6 +5,7 @@ import com.provanetprecision.lanchoneteservice.controller.errors.PedidoFechadoEx
 import com.provanetprecision.lanchoneteservice.controller.errors.PedidoNotFoundException;
 import com.provanetprecision.lanchoneteservice.controller.errors.QuantidadeProdutoException;
 import com.provanetprecision.lanchoneteservice.domain.Pedido;
+import com.provanetprecision.lanchoneteservice.domain.pk.PedidoProdutoPK;
 import com.provanetprecision.lanchoneteservice.repository.PedidoProdutoRepository;
 import com.provanetprecision.lanchoneteservice.repository.PedidoRepository;
 import com.provanetprecision.lanchoneteservice.repository.ProdutoRepository;
@@ -25,6 +26,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -41,11 +43,19 @@ public class PedidoService {
     private final ProdutoRepository produtoRepository;
 
     public PedidoDTO salvar(PedidoDTO dto) {
+        dto.setPedidoFechado(Boolean.FALSE);
         return mapper.toDto(repository.save(mapper.toEntity(dto)));
     }
 
     public PedidoProdutoDTO adicionarProduto(PedidoProdutoDTO dto) {
+        PedidoProdutoPK pedidoProdutoPK = new PedidoProdutoPK(dto.getIdPedido(), dto.getIdProduto());
+        Optional<PedidoProdutoDTO> pedidoProdutoDTO = findProdutoPedidoById(pedidoProdutoPK);
+        pedidoProdutoDTO.ifPresent(produtoDTO -> dto.setQuantidade(dto.getQuantidade() + produtoDTO.getQuantidade()));
         return save(dto);
+    }
+
+    public Optional<PedidoProdutoDTO> findProdutoPedidoById(PedidoProdutoPK pedidoProdutoPK) {
+        return pedidoProdutoRepository.findById(pedidoProdutoPK).map(pedidoProdutoMapper::toDto);
     }
 
     public PedidoProdutoDTO removerProduto(PedidoProdutoDTO dto) {
@@ -94,7 +104,6 @@ public class PedidoService {
     }
 
     public Optional<PedidoDTO> findPedidoById(Long id) {
-        log.debug("Request to get PedidoIdMagento: {}", id);
         return pedidoRepository.findById(id).map(mapper::toDto);
     }
 

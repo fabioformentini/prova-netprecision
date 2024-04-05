@@ -19,22 +19,22 @@
             <button
               pButton
               icon="pi pi-eye"
-              class="button-action botao-secundario flex align-items-center justify-content-center m-1"
+              class="botao-secundario flex align-items-center justify-content-center m-1"
               iconPos="left"
               (click)="handleAcao(rowData, 'visualizar')"
             >
             </button>
             <button pButton
                     icon="pi pi-pencil"
-                    class="button-action flex align-items-center justify-content-center m-1"
+                    class="flex align-items-center justify-content-center m-1"
                     iconPos="left"
                     (click)="handleAcao(rowData, 'editar')"
             >
             </button>
             <button
               pButton
-              icon="pi pi-trash"
-              class="button-action flex align-items-center justify-content-center m-1"
+              icon="pi pi-lock"
+              class="flex align-items-center justify-content-center m-1"
             (click)="fecharPedido(rowData.id)">
             </button>
           </div>
@@ -44,4 +44,13 @@
   </ng-template>
 </p-table>
 <p-toast></p-toast>
-<p-confirmDialog></p-confirmDialog>
+<p-dialog header="Fechar Pedido" [(visible)]="displayModal" [modal]="true" [style]="{width: '50'}"
+          [draggable]="false" [resizable]="false">
+  <div class="field">
+    <label class="block">Valor do pagamento</label>
+    <p-inputNumber inputId="integeronly" [(ngModel)]="valorPagamento"></p-inputNumber>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-check" (click)="displayModal=false" label="fechar" styleClass="p-button-text" (onClick)="fechar()"></p-button>
+  </ng-template>
+</p-dialog>

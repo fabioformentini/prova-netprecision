@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: 'pedidos', loadChildren: () => import('./modules/pedido/pedido.module').then(arquivo => arquivo.PedidoModule)},
+  { path: 'pedidos', loadChildren: () => import('./modules/pedido/pedido.module').then(pedido => pedido.PedidoModule)},
 ];
 
 @NgModule({

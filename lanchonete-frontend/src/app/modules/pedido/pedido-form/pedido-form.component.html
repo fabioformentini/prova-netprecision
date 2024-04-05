@@ -20,7 +20,7 @@
   <p-table [columns]="colsProdutos" [value]="produtosList" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th *ngFor="let col of columns">
+        <th class="centralizado" *ngFor="let col of columns">
           {{ col.header }}
         </th>
       </tr>

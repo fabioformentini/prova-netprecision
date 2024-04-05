@@ -15,7 +15,7 @@ Execute o seguinte comando para criar e iniciar o banco de dados PostgreSQL (cer
 
 docker-compose up -d
 
-## Configurando o Aplicação Angular
+## Configurando a Aplicação Angular
 Pré requisitos: node v16.
 
 Abra um terminal e navegue até a pasta do projeto Angular.
@@ -38,6 +38,8 @@ Pré requisitos: jdk17 e maven.
 Abra a sua IDE.
 
 Importe o projeto Spring para sua IDE.
+
+Baixe as dependências mavend do projeto.
 
 Certifique-se de que o container do banco de dados esteja up.
 
